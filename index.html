@@ -1,0 +1,946 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>English Phonetics Adventure</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+      body {
+        font-family: 'Poppins', sans-serif;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://aistudiocdn.com/react@^19.2.0",
+    "react-dom/": "https://aistudiocdn.com/react-dom@^19.2.0/",
+    "react/": "https://aistudiocdn.com/react@^19.2.0/"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="text/babel" data-type="module">
+import React, { useState, useEffect, useCallback, useMemo } from 'react';
+import ReactDOM from 'react-dom/client';
+
+// Data from data/phonetics.ts
+const phoneticData = [
+  {
+    title: '5 Nguyên âm (Âm Ngắn - Short Vowels)',
+    sounds: [
+      {
+        letter: 'A',
+        sound: '/æ/',
+        title: 'Chữ A (âm ngắn /æ/ - "a bẹt")',
+        description: 'Âm này giống như khi bạn nói "a" nhưng mở miệng rộng hơn một chút, bè sang hai bên.',
+        examples: [
+          { word: 'apple', phonetic: "/'æpəl/", meaning: 'quả táo', emoji: '🍎' },
+          { word: 'cat', phonetic: '/kæt/', meaning: 'con mèo', emoji: '🐈' },
+          { word: 'map', phonetic: '/mæp/', meaning: 'bản đồ', emoji: '🗺️' },
+          { word: 'bag', phonetic: '/bæg/', meaning: 'cái túi', emoji: '👜' },
+          { word: 'hat', phonetic: '/hæt/', meaning: 'cái mũ', emoji: '🎩' },
+        ],
+      },
+      {
+        letter: 'E',
+        sound: '/e/',
+        title: 'Chữ E (âm ngắn /e/)',
+        description: 'Âm này nghe tương tự như "e" trong tiếng Việt.',
+        examples: [
+          { word: 'egg', phonetic: '/eg/', meaning: 'quả trứng', emoji: '🥚' },
+          { word: 'pen', phonetic: '/pen/', meaning: 'cái bút mực', emoji: '🖊️' },
+          { word: 'bed', phonetic: '/bed/', meaning: 'cái giường', emoji: '🛏️' },
+          { word: 'net', phonetic: '/net/', meaning: 'cái lưới', emoji: '🕸️' },
+          { word: 'red', phonetic: '/red/', meaning: 'màu đỏ', emoji: '🔴' },
+        ],
+      },
+      {
+        letter: 'I',
+        sound: '/ɪ/',
+        title: 'Chữ I (âm ngắn /ɪ/)',
+        description: 'Âm này không giống "i" tiếng Việt. Nó ngắn và dứt khoát, gần giống "i" và "ư" (hơi nghiêng về "i").',
+        examples: [
+          { word: 'in', phonetic: '/ɪn/', meaning: 'ở trong', emoji: '📥' },
+          { word: 'sit', phonetic: '/sɪt/', meaning: 'ngồi', emoji: '🧘' },
+          { word: 'pin', phonetic: '/pɪn/', meaning: 'cái ghim', emoji: '📌' },
+          { word: 'big', phonetic: '/bɪg/', meaning: 'to lớn', emoji: '🐘' },
+          { word: 'fish', phonetic: '/fɪʃ/', meaning: 'con cá', emoji: '🐟' },
+        ],
+      },
+      {
+        letter: 'O',
+        sound: '/ɒ/',
+        title: 'Chữ O (âm ngắn /ɒ/ - giọng Anh-Anh)',
+        description: 'Âm này tròn môi, dứt khoát, giống như "o" trong tiếng Việt.',
+        examples: [
+          { word: 'on', phonetic: '/ɒn/', meaning: 'ở trên', emoji: '🔛' },
+          { word: 'dog', phonetic: '/dɒg/', meaning: 'con chó', emoji: '🐕' },
+          { word: 'hot', phonetic: '/hɒt/', meaning: 'nóng', emoji: '🔥' },
+          { word: 'box', phonetic: '/bɒks/', meaning: 'cái hộp', emoji: '📦' },
+          { word: 'mop', phonetic: '/mɒp/', meaning: 'cây lau nhà', emoji: '🧹' },
+        ],
+      },
+      {
+        letter: 'U',
+        sound: '/ʌ/',
+        title: 'Chữ U (âm ngắn /ʌ/)',
+        description: 'Âm này giống "ơ" hoặc "ă" trong tiếng Việt (hơi nghiêng về "ă" nhiều hơn).',
+        examples: [
+          { word: 'up', phonetic: '/ʌp/', meaning: 'ở trên', emoji: '⬆️' },
+          { word: 'cup', phonetic: '/kʌp/', meaning: 'cái cốc', emoji: '🏆' },
+          { word: 'sun', phonetic: '/sʌn/', meaning: 'mặt trời', emoji: '☀️' },
+          { word: 'bus', phonetic: '/bʌs/', meaning: 'xe buýt', emoji: '🚌' },
+          { word: 'run', phonetic: '/rʌn/', meaning: 'chạy', emoji: '🏃' },
+        ],
+      },
+    ],
+  },
+  {
+    title: '5 Phụ âm (Âm Cơ bản)',
+    sounds: [
+      {
+        letter: 'B',
+        sound: '/b/',
+        title: 'Chữ B (âm /b/)',
+        description: 'Phát âm giống "b" trong tiếng Việt.',
+        examples: [
+          { word: 'boy', phonetic: '/bɔɪ/', meaning: 'cậu bé', emoji: '👦' },
+          { word: 'bag', phonetic: '/bæg/', meaning: 'cái túi', emoji: '👜' },
+          { word: 'bed', phonetic: '/bed/', meaning: 'cái giường', emoji: '🛏️' },
+          { word: 'bus', phonetic: '/bʌs/', meaning: 'xe buýt', emoji: '🚌' },
+          { word: 'job', phonetic: '/dʒɒb/', meaning: 'công việc', emoji: '💼' },
+        ],
+      },
+       {
+        letter: 'M',
+        sound: '/m/',
+        title: 'Chữ M (âm /m/)',
+        description: 'Phát âm giống "m" trong tiếng Việt.',
+        examples: [
+          { word: 'man', phonetic: '/mæn/', meaning: 'người đàn ông', emoji: '👨' },
+          { word: 'map', phonetic: '/mæp/', meaning: 'bản đồ', emoji: '🗺️' },
+          { word: 'mom', phonetic: '/mɒm/', meaning: 'mẹ', emoji: '👩‍👧' },
+          { word: 'milk', phonetic: '/mɪlk/', meaning: 'sữa', emoji: '🥛' },
+          { word: 'time', phonetic: '/taɪm/', meaning: 'thời gian', emoji: '⏰' },
+        ],
+      },
+       {
+        letter: 'S',
+        sound: '/s/',
+        title: 'Chữ S (âm /s/)',
+        description: 'Phát âm giống "x" trong tiếng Việt.',
+        examples: [
+          { word: 'sun', phonetic: '/sʌn/', meaning: 'mặt trời', emoji: '☀️' },
+          { word: 'sit', phonetic: '/sɪt/', meaning: 'ngồi', emoji: '🧘' },
+          { word: 'sad', phonetic: '/sæd/', meaning: 'buồn', emoji: '😢' },
+          { word: 'miss', phonetic: '/mɪs/', meaning: 'nhớ, bỏ lỡ', emoji: '👋' },
+          { word: 'bus', phonetic: '/bʌs/', meaning: 'xe buýt', emoji: '🚌' },
+        ],
+      },
+       {
+        letter: 'T',
+        sound: '/t/',
+        title: 'Chữ T (âm /t/ - bật hơi)',
+        description: 'Bật hơi mạnh hơn chữ "t" tiếng Việt.',
+        examples: [
+          { word: 'top', phonetic: '/tɒp/', meaning: 'trên đỉnh', emoji: '🔝' },
+          { word: 'ten', phonetic: '/ten/', meaning: 'số mười', emoji: '🔟' },
+          { word: 'tap', phonetic: '/tæp/', meaning: 'vòi nước', emoji: '💧' },
+          { word: 'cat', phonetic: '/kæt/', meaning: 'con mèo', emoji: '🐈' },
+          { word: 'hot', phonetic: '/hɒt/', meaning: 'nóng', emoji: '🔥' },
+        ],
+      },
+      {
+        letter: 'P',
+        sound: '/p/',
+        title: 'Chữ P (âm /p/ - bật hơi)',
+        description: 'Bật hơi mạnh hơn chữ "p" tiếng Việt.',
+        examples: [
+          { word: 'pen', phonetic: '/pen/', meaning: 'cái bút', emoji: '🖊️' },
+          { word: 'pig', phonetic: '/pɪg/', meaning: 'con lợn', emoji: '🐷' },
+          { word: 'map', phonetic: '/mæp/', meaning: 'bản đồ', emoji: '🗺️' },
+          { word: 'stop', phonetic: '/stɒp/', meaning: 'dừng lại', emoji: '🛑' },
+          { word: 'cup', phonetic: '/kʌp/', meaning: 'cái cốc', emoji: '🏆' },
+        ],
+      },
+    ]
+  },
+  {
+      title: 'Phụ âm tiếp theo (Âm Cơ bản)',
+      sounds: [
+        {
+            letter: 'C',
+            sound: '/k/',
+            title: 'Chữ C (âm cứng /k/)',
+            description: 'Âm cứng /k/: khi đi với a, o, u (như cat, cold, cup).\nÂm mềm /s/: khi đi với e, i, y (như city, centre, cycle).',
+            examples: [
+              { word: 'cat', phonetic: '/kæt/', meaning: 'con mèo', emoji: '🐈' },
+              { word: 'cup', phonetic: '/kʌp/', meaning: 'cái cốc', emoji: '🏆' },
+              { word: 'can', phonetic: '/kæn/', meaning: 'có thể, cái lon', emoji: '🥫' },
+              { word: 'car', phonetic: '/kɑːr/', meaning: 'xe ô tô', emoji: '🚗' },
+              { word: 'cold', phonetic: '/kəʊld/', meaning: 'lạnh', emoji: '🥶' },
+            ],
+        },
+        {
+            letter: 'C',
+            sound: '/s/',
+            title: 'Chữ C (âm mềm /s/)',
+            description: 'Khi đi với e, i, y (như city, centre, cycle), chữ C được phát âm là /s/.',
+            examples: [
+              { word: 'city', phonetic: "/'sɪti/", meaning: 'thành phố', emoji: '🏙️' },
+              { word: 'cent', phonetic: '/sent/', meaning: 'đồng xu', emoji: '🪙' },
+              { word: 'face', phonetic: '/feɪs/', meaning: 'khuôn mặt', emoji: '😊' },
+              { word: 'nice', phonetic: '/naɪs/', meaning: 'tốt, đẹp', emoji: '👍' },
+              { word: 'cycle', phonetic: "/'saɪkl/", meaning: 'đạp xe', emoji: '🚲' },
+            ],
+        },
+        {
+            letter: 'D',
+            sound: '/d/',
+            title: 'Chữ D (âm /d/)',
+            description: 'Âm này giống hệt chữ "đ" trong tiếng Việt.',
+            examples: [
+              { word: 'dog', phonetic: '/dɒg/', meaning: 'con chó', emoji: '🐕' },
+              { word: 'dad', phonetic: '/dæd/', meaning: 'bố', emoji: '👨‍👧‍👦' },
+              { word: 'day', phonetic: '/deɪ/', meaning: 'ngày', emoji: '📅' },
+              { word: 'sad', phonetic: '/sæd/', meaning: 'buồn', emoji: '😢' },
+              { word: 'bed', phonetic: '/bed/', meaning: 'cái giường', emoji: '🛏️' },
+            ],
+        },
+        {
+            letter: 'F',
+            sound: '/f/',
+            title: 'Chữ F (âm /f/)',
+            description: 'Âm này giống hệt chữ "ph" trong tiếng Việt (dùng răng trên chạm nhẹ môi dưới và thổi hơi).',
+            examples: [
+              { word: 'fan', phonetic: '/fæn/', meaning: 'cái quạt', emoji: '🌬️' },
+              { word: 'fish', phonetic: '/fɪʃ/', meaning: 'con cá', emoji: '🐟' },
+              { word: 'fat', phonetic: '/fæt/', meaning: 'béo', emoji: '🍔' },
+              { word: 'for', phonetic: '/fɔːr/', meaning: 'cho, vì', emoji: '🎁' },
+              { word: 'if', phonetic: '/ɪf/', meaning: 'nếu', emoji: '🤔' },
+            ],
+        },
+        {
+            letter: 'G',
+            sound: '/g/',
+            title: 'Chữ G (âm cứng /g/)',
+            description: 'Âm này giống chữ "g" trong tiếng Việt (như trong "ga tàu").',
+            examples: [
+              { word: 'go', phonetic: '/gəʊ/', meaning: 'đi', emoji: '➡️' },
+              { word: 'get', phonetic: '/get/', meaning: 'lấy, có được', emoji: '🤝' },
+              { word: 'gas', phonetic: '/gæs/', meaning: 'khí gas', emoji: '⛽' },
+              { word: 'big', phonetic: '/bɪg/', meaning: 'to lớn', emoji: '🐘' },
+              { word: 'dog', phonetic: '/dɒg/', meaning: 'con chó', emoji: '🐕' },
+            ],
+        },
+        {
+            letter: 'G',
+            sound: '/dʒ/',
+            title: 'Chữ G (âm mềm /dʒ/)',
+            description: 'Khi đi với e, i, y (như gym, giant), chữ G thường được phát âm là /dʒ/.',
+            examples: [
+              { word: 'gym', phonetic: '/dʒɪm/', meaning: 'phòng tập', emoji: '🏋️' },
+              { word: 'giant', phonetic: "/'dʒaɪənt/", meaning: 'khổng lồ', emoji: '🧍‍♂️' },
+              { word: 'magic', phonetic: "/'mædʒɪk/", meaning: 'phép thuật', emoji: '🪄' },
+              { word: 'page', phonetic: '/peɪdʒ/', meaning: 'trang giấy', emoji: '📄' },
+              { word: 'large', phonetic: '/lɑːdʒ/', meaning: 'rộng lớn', emoji: '↔️' },
+            ],
+        },
+        {
+            letter: 'H',
+            sound: '/h/',
+            title: 'Chữ H (âm /h/)',
+            description: 'Âm này giống hệt chữ "h" trong tiếng Việt (âm này chỉ là một luồng hơi nhẹ).',
+            examples: [
+              { word: 'hat', phonetic: '/hæt/', meaning: 'cái mũ', emoji: '🎩' },
+              { word: 'hen', phonetic: '/hen/', meaning: 'con gà mái', emoji: '🐔' },
+              { word: 'him', phonetic: '/hɪm/', meaning: 'anh ấy, cậu ấy', emoji: '👉' },
+              { word: 'hot', phonetic: '/hɒt/', meaning: 'nóng', emoji: '🔥' },
+              { word: 'how', phonetic: '/haʊ/', meaning: 'như thế nào', emoji: '❓' },
+            ],
+        },
+        {
+            letter: 'H',
+            sound: '(câm)',
+            title: 'Chữ H (âm câm)',
+            description: 'Chữ H thường là âm câm khi nó đứng sau các chữ cái w, c, g, r hoặc ở đầu một số từ mượn từ tiếng Pháp.',
+            examples: [
+                { word: 'hour', phonetic: '/ˈaʊər/', meaning: 'giờ', emoji: '🕰️' },
+                { word: 'honest', phonetic: '/ˈɒnɪst/', meaning: 'trung thực', emoji: '😇' },
+                { word: 'honor', phonetic: '/ˈɒnər/', meaning: 'danh dự', emoji: '🎖️' },
+                { word: 'what', phonetic: '/wɒt/', meaning: 'cái gì', emoji: '🤔' },
+                { word: 'ghost', phonetic: '/ɡəʊst/', meaning: 'con ma', emoji: '👻' },
+            ],
+        },
+      ]
+  },
+  {
+    title: 'Các phụ âm khác',
+    sounds: [
+        {
+            letter: 'K',
+            sound: '/k/',
+            title: 'Chữ K (âm /k/)',
+            description: 'Âm này phát âm giống hệt âm "cứng" của chữ C. Chúng là "anh em sinh đôi" về âm thanh!',
+            examples: [
+                { word: 'key', phonetic: '/kiː/', meaning: 'chìa khóa', emoji: '🔑' },
+                { word: 'kid', phonetic: '/kɪd/', meaning: 'đứa trẻ', emoji: '🧒' },
+                { word: 'kiss', phonetic: '/kɪs/', meaning: 'hôn', emoji: '😘' },
+                { word: 'book', phonetic: '/bʊk/', meaning: 'quyển sách', emoji: '📚' },
+                { word: 'milk', phonetic: '/mɪlk/', meaning: 'sữa', emoji: '🥛' },
+            ],
+        },
+        {
+            letter: 'L',
+            sound: '/l/',
+            title: 'Chữ L (âm /l/)',
+            description: 'Rất giống chữ "l" trong tiếng Việt. Đặt đầu lưỡi lên phần nướu ngay sau răng cửa trên.',
+            examples: [
+                { word: 'leg', phonetic: '/leɡ/', meaning: 'cái chân', emoji: '🦵' },
+                { word: 'lip', phonetic: '/lɪp/', meaning: 'cái môi', emoji: '👄' },
+                { word: 'let', phonetic: '/let/', meaning: 'để cho', emoji: '✅' },
+                { word: 'like', phonetic: '/laɪk/', meaning: 'thích', emoji: '👍' },
+                { word: 'fell', phonetic: '/fel/', meaning: 'ngã', emoji: '🤸‍♂️' },
+            ],
+        },
+        {
+            letter: 'N',
+            sound: '/n/',
+            title: 'Chữ N (âm /n/)',
+            description: 'Âm này giống hệt chữ "n" trong tiếng Việt.',
+            examples: [
+                { word: 'no', phonetic: '/nəʊ/', meaning: 'không', emoji: '❌' },
+                { word: 'net', phonetic: '/net/', meaning: 'cái lưới', emoji: '🕸️' },
+                { word: 'nap', phonetic: '/næp/', meaning: 'giấc ngủ trưa', emoji: '😴' },
+                { word: 'man', phonetic: '/mæn/', meaning: 'người đàn ông', emoji: '👨' },
+                { word: 'sun', phonetic: '/sʌn/', meaning: 'mặt trời', emoji: '☀️' },
+            ],
+        },
+        {
+            letter: 'R',
+            sound: '/r/',
+            title: 'Chữ R (âm /r/)',
+            description: 'Cong đầu lưỡi lên về phía vòm họng, nhưng không chạm vào bất cứ đâu. Môi hơi tròn lại.',
+            examples: [
+                { word: 'red', phonetic: '/red/', meaning: 'màu đỏ', emoji: '🔴' },
+                { word: 'run', phonetic: '/rʌn/', meaning: 'chạy', emoji: '🏃' },
+                { word: 'rat', phonetic: '/ræt/', meaning: 'con chuột', emoji: '🐀' },
+                { word: 'rip', phonetic: '/rɪp/', meaning: 'xé, vết rách', emoji: '✂️' },
+                { word: 'car', phonetic: '/kɑːr/', meaning: 'xe ô tô', emoji: '🚗' },
+            ],
+        },
+        {
+            letter: 'J',
+            sound: '/dʒ/',
+            title: 'Chữ J (âm /dʒ/)',
+            description: 'Giống như âm "gi" (như trong "gia đình"), nhưng bạn cần bật mạnh hơn một chút (giống như kết hợp "đ" và "gi").',
+            examples: [
+                { word: 'jam', phonetic: '/dʒæm/', meaning: 'mứt', emoji: '🍓' },
+                { word: 'jet', phonetic: '/dʒet/', meaning: 'máy bay phản lực', emoji: '✈️' },
+                { word: 'job', phonetic: '/dʒɒb/', meaning: 'công việc', emoji: '💼' },
+                { word: 'jug', phonetic: '/dʒʌg/', meaning: 'cái bình', emoji: '🏺' },
+                { word: 'jump', phonetic: '/dʒʌmp/', meaning: 'nhảy', emoji: '🤸' },
+            ],
+        },
+    ]
+  },
+  {
+    title: '6 Chữ cái cuối cùng',
+    sounds: [
+        {
+            letter: 'Q',
+            sound: '/kw/',
+            title: 'Chữ Q (thường đi với U, âm /kw/)',
+            description: 'Chữ Q hầu như không bao giờ đứng một mình. Nó luôn đi cùng chữ U (qu) và tạo ra 2 âm thanh kết hợp: /k/ và /w/.',
+            examples: [
+                { word: 'queen', phonetic: '/kwiːn/', meaning: 'nữ hoàng', emoji: '👑' },
+                { word: 'quick', phonetic: '/kwɪk/', meaning: 'nhanh', emoji: '⚡' },
+                { word: 'quiz', phonetic: '/kwɪz/', meaning: 'câu đố', emoji: '❓' },
+                { word: 'quiet', phonetic: '/ˈkwaɪət/', meaning: 'yên tĩnh', emoji: '🤫' },
+                { word: 'quit', phonetic: '/kwɪt/', meaning: 'từ bỏ', emoji: '🚫' },
+            ],
+        },
+        {
+            letter: 'V',
+            sound: '/v/',
+            title: 'Chữ V (âm /v/)',
+            description: 'Để phát âm chuẩn, bạn hãy để răng cửa trên chạm nhẹ vào môi dưới và rung cổ họng.',
+            examples: [
+                { word: 'van', phonetic: '/væn/', meaning: 'xe tải nhỏ', emoji: '🚐' },
+                { word: 'vet', phonetic: '/vet/', meaning: 'bác sĩ thú y', emoji: '👩‍⚕️' },
+                { word: 'very', phonetic: '/ˈveri/', meaning: 'rất', emoji: '✨' },
+                { word: 'give', phonetic: '/ɡɪv/', meaning: 'cho', emoji: '🎁' },
+                { word: 'save', phonetic: '/seɪv/', meaning: 'lưu, cứu', emoji: '💾' },
+            ],
+        },
+        {
+            letter: 'W',
+            sound: '/w/',
+            title: 'Chữ W (âm /w/)',
+            description: 'Giống như bạn nói "u" nhưng rất nhanh rồi chuyển sang âm tiếp theo. Bạn cần tròn môi lại.',
+            examples: [
+                { word: 'wet', phonetic: '/wet/', meaning: 'ẩm ướt', emoji: '💧' },
+                { word: 'win', phonetic: '/wɪn/', meaning: 'thắng', emoji: '🏆' },
+                { word: 'web', phonetic: '/web/', meaning: 'mạng lưới', emoji: '🌐' },
+                { word: 'wow', phonetic: '/waʊ/', meaning: 'ồ!', emoji: '😮' },
+                { word: 'why', phonetic: '/waɪ/', meaning: 'tại sao', emoji: '❓' },
+            ],
+        },
+        {
+            letter: 'X',
+            sound: '/ks/',
+            title: 'Chữ X (âm /ks/)',
+            description: 'Là một chữ cái "tổ hợp"! Nó tạo ra 2 âm thanh: /k/ và /s/ ghép lại. Âm này thường xuất hiện ở cuối từ.',
+            examples: [
+                { word: 'box', phonetic: '/bɒks/', meaning: 'cái hộp', emoji: '📦' },
+                { word: 'fox', phonetic: '/fɒks/', meaning: 'con cáo', emoji: '🦊' },
+                { word: 'six', phonetic: '/sɪks/', meaning: 'số sáu', emoji: '6️⃣' },
+                { word: 'mix', phonetic: '/mɪks/', meaning: 'trộn lẫn', emoji: '🥣' },
+                { word: 'wax', phonetic: '/wæks/', meaning: 'sáp', emoji: '🕯️' },
+            ],
+        },
+        {
+            letter: 'Y',
+            sound: '/j/',
+            title: 'Chữ Y (âm /j/ - khi là phụ âm)',
+            description: 'Khi là phụ âm (thường đứng đầu từ), nó tạo ra âm /j/. Giống như "d" trong "du lịch" hoặc "gi" trong "gia đình".',
+            examples: [
+                { word: 'yes', phonetic: '/jes/', meaning: 'vâng, đúng', emoji: '✅' },
+                { word: 'you', phonetic: '/juː/', meaning: 'bạn', emoji: '👉' },
+                { word: 'yet', phonetic: '/jet/', meaning: 'chưa', emoji: '⏳' },
+                { word: 'yam', phonetic: '/jæm/', meaning: 'khoai mỡ', emoji: '🍠' },
+                { word: 'yell', phonetic: '/jel/', meaning: 'la hét', emoji: '🗣️' },
+            ],
+        },
+        {
+            letter: 'Z',
+            sound: '/z/',
+            title: 'Chữ Z (âm /z/)',
+            description: 'Là "người anh em" của âm /s/. Cả hai đều luồng hơi qua kẽ răng, nhưng /z/ có rung cổ họng (giống như tiếng vo ve của con ong).',
+            examples: [
+                { word: 'zoo', phonetic: '/zuː/', meaning: 'sở thú', emoji: '🦓' },
+                { word: 'zip', phonetic: '/zɪp/', meaning: 'khóa kéo', emoji: '🤐' },
+                { word: 'zero', phonetic: '/ˈzɪərəʊ/', meaning: 'số không', emoji: '0️⃣' },
+                { word: 'buzz', phonetic: '/bʌz/', meaning: 'tiếng vo ve', emoji: '🐝' },
+                { word: 'quiz', phonetic: '/kwɪz/', meaning: 'câu đố', emoji: '❓' },
+            ],
+        },
+    ]
+  }
+];
+
+// Icons from components/Icons.tsx
+const SpeakerIcon = ({ className }) => (
+  <svg
+    xmlns="http://www.w3.org/2000/svg"
+    className={className}
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+    strokeWidth={2}
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      d="M15.536 8.464a5 5 0 010 7.072m2.828-9.9a9 9 0 010 12.728M5.586 15H4a1 1 0 01-1-1v-4a1 1 0 011-1h1.586l4.707-4.707C10.923 3.663 12 4.109 12 5v14c0 .891-1.077 1.337-1.707.707L5.586 15z"
+    />
+  </svg>
+);
+
+const CheckCircleIcon = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+
+const XCircleIcon = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" />
+    </svg>
+);
+
+const ChevronDownIcon = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M19 9l-7 7-7-7" />
+    </svg>
+);
+
+const MenuIcon = ({ className }) => (
+    <svg xmlns="http://www.w3.org/2000/svg" className={className} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
+    </svg>
+);
+
+
+// Hook from hooks/useSpeech.ts
+const useSpeech = () => {
+  const [voices, setVoices] = useState([]);
+
+  useEffect(() => {
+    const handleVoicesChanged = () => {
+      const availableVoices = window.speechSynthesis.getVoices();
+      setVoices(availableVoices);
+    };
+    window.speechSynthesis.onvoiceschanged = handleVoicesChanged;
+    handleVoicesChanged(); 
+    return () => {
+      window.speechSynthesis.onvoiceschanged = null;
+    };
+  }, []);
+
+  const speak = useCallback((text, onEnd) => {
+    if (!window.speechSynthesis) {
+      console.warn('Speech Synthesis not supported.');
+      return;
+    }
+    
+    const utterance = new SpeechSynthesisUtterance(text);
+    
+    const englishVoice = voices.find(voice => voice.lang.startsWith('en-US')) || voices.find(voice => voice.lang.startsWith('en-'));
+    
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+    } else if (voices.length > 0) {
+        // Fallback to first available voice if no english voice found
+        // utterance.voice = voices[0];
+    }
+
+    utterance.rate = 0.9;
+    utterance.pitch = 1.1;
+
+    if (onEnd) {
+      utterance.onend = onEnd;
+    }
+
+    window.speechSynthesis.cancel();
+    window.speechSynthesis.speak(utterance);
+  }, [voices]);
+
+  return { speak };
+};
+
+
+// Component from components/WelcomeScreen.tsx
+const WelcomeScreen = ({ onStart }) => {
+  const [name, setName] = useState('');
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onStart(name);
+  };
+
+  return (
+    <div className="flex items-center justify-center h-screen bg-gradient-to-br from-sky-400 to-blue-600">
+      <div className="w-full max-w-md p-8 space-y-8 bg-white rounded-2xl shadow-2xl text-center transform transition-all hover:scale-105 duration-300">
+        <div className="space-y-2">
+            <h1 className="text-4xl font-bold text-slate-800">Phonetics Adventure</h1>
+            <p className="text-slate-500">Your journey to perfect English pronunciation starts here!</p>
+        </div>
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <label htmlFor="name" className="sr-only">Your Name</label>
+            <input
+              id="name"
+              type="text"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Enter your name"
+              required
+              className="w-full px-4 py-3 text-lg text-center border-2 border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition"
+            />
+          </div>
+          <button
+            type="submit"
+            className="w-full px-6 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
+          >
+            Let's Go!
+          </button>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+// Component from components/QuizCard.tsx
+const QuizCard = ({ sound, word, onCorrect }) => {
+  const [selected, setSelected] = useState(null);
+  const [status, setStatus] = useState('idle');
+  const { speak } = useSpeech();
+
+  const correctLetter = useMemo(() => {
+    const letter = sound.letter.toLowerCase();
+    if(letter === 'q') return 'qu';
+    return letter;
+  }, [sound.letter]);
+  
+  const wordParts = useMemo(() => {
+    const wordLower = word.word.toLowerCase();
+    const index = wordLower.indexOf(correctLetter);
+    if (index === -1) return [wordLower, ''];
+    return [
+      wordLower.substring(0, index),
+      wordLower.substring(index + correctLetter.length),
+    ];
+  }, [word.word, correctLetter]);
+
+  const options = useMemo(() => {
+    const generateOptions = (correct) => {
+        const letter = correct.toLowerCase();
+        let pool;
+        
+        if (['a', 'e', 'i', 'o', 'u'].includes(letter[0])) {
+            pool = ['a', 'e', 'i', 'o', 'u'].filter(v => v !== letter);
+        } else {
+            pool = 'bcdfghjklmnprstvwxyz'.split('').filter(c => c !== letter[0]);
+            if (letter === 'qu') pool = ['q', 'k', 'wh', ...pool].filter(c => c !== letter);
+        }
+
+        const opts = new Set([letter]);
+        while (opts.size < 4 && pool.length > 0) {
+            const randomIndex = Math.floor(Math.random() * pool.length);
+            opts.add(pool.splice(randomIndex, 1)[0]);
+        }
+        return Array.from(opts).sort(() => Math.random() - 0.5);
+    };
+    return generateOptions(correctLetter);
+  }, [correctLetter]);
+
+  const playSound = useCallback(() => {
+    speak(word.word);
+  }, [speak, word.word]);
+
+  useEffect(() => {
+    const introSpeech = () => {
+        speak(`What's the missing sound in ${word.word}?`, playSound);
+    }
+    const timer = setTimeout(introSpeech, 500);
+    return () => clearTimeout(timer);
+  }, [word.word]);
+  
+  const handleSelect = (option) => {
+    if (status !== 'idle') return;
+
+    setSelected(option);
+    if (option.toLowerCase() === correctLetter) {
+      setStatus('correct');
+      speak("Correct!", () => {
+          speak(word.word, onCorrect);
+      });
+    } else {
+      setStatus('incorrect');
+      speak('Try again.');
+      setTimeout(() => {
+          setStatus('idle');
+          setSelected(null);
+      }, 1000);
+    }
+  };
+
+  const getButtonClass = (option) => {
+    const baseClass = "w-full text-2xl font-bold py-4 px-6 rounded-xl shadow-md transition-all duration-300 transform flex items-center justify-center";
+    if (status === 'idle') {
+        return `${baseClass} bg-white hover:bg-sky-100 hover:-translate-y-1 text-slate-700`;
+    }
+    if (selected !== option) {
+        return `${baseClass} bg-slate-200 text-slate-500`;
+    }
+    if (status === 'correct') {
+        return `${baseClass} bg-green-500 text-white scale-105`;
+    }
+    if (status === 'incorrect') {
+        return `${baseClass} bg-red-500 text-white animate-shake`;
+    }
+    return baseClass;
+  };
+
+  return (
+    <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full">
+      <div className="flex justify-between items-center mb-6">
+        <div className="text-xl">
+          <span className="font-semibold text-slate-600">
+            {word.emoji && <span className="mr-2 text-2xl">{word.emoji}</span>}
+            {word.meaning}
+          </span>
+          <span className="text-slate-400 ml-2">{word.phonetic}</span>
+        </div>
+        <button
+          onClick={playSound}
+          className="p-3 bg-sky-100 rounded-full text-sky-500 hover:bg-sky-200 transition"
+        >
+          <SpeakerIcon className="w-6 h-6" />
+        </button>
+      </div>
+
+      <div className="bg-slate-100 rounded-lg p-8 mb-8 text-center">
+        <p className="text-5xl font-bold tracking-widest text-slate-700">
+          {wordParts[0]}
+          <span className="inline-block text-center mx-2 text-sky-500 bg-sky-200 rounded-lg px-4 py-2 w-16 sm:w-20">
+             {status === 'correct' ? correctLetter : '_'}
+          </span>
+          {wordParts[1]}
+        </p>
+      </div>
+
+      <div className="grid grid-cols-2 gap-4">
+        {options.map((option) => (
+          <button
+            key={option}
+            onClick={() => handleSelect(option)}
+            disabled={status !== 'idle'}
+            className={getButtonClass(option)}
+          >
+            {option}
+            {selected === option && status === 'correct' && <CheckCircleIcon className="w-7 h-7 ml-2"/>}
+            {selected === option && status === 'incorrect' && <XCircleIcon className="w-7 h-7 ml-2"/>}
+          </button>
+        ))}
+      </div>
+       <style>{`
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .animate-shake {
+            animation: shake 0.5s ease-in-out;
+        }
+       `}</style>
+    </div>
+  );
+};
+
+
+// Component from components/TopicSelector.tsx
+const TopicSelector = ({
+  topics,
+  currentTopicIndex,
+  currentSoundIndex,
+  onSelectSound,
+}) => {
+  const [expandedTopics, setExpandedTopics] = useState([0]);
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleTopic = (index) => {
+    setExpandedTopics((prev) =>
+      prev.includes(index) ? prev.filter((i) => i !== index) : [...prev, index]
+    );
+  };
+
+  const handleSelect = (topicIdx, soundIdx) => {
+    onSelectSound(topicIdx, soundIdx);
+    setIsOpen(false);
+  }
+
+  const content = (
+      <nav className="p-4 space-y-4">
+        <h2 className="text-2xl font-bold text-white">Topics</h2>
+        {topics.map((topic, topicIdx) => (
+          <div key={topicIdx}>
+            <button
+              onClick={() => toggleTopic(topicIdx)}
+              className="w-full flex justify-between items-center text-left px-3 py-2 text-white font-semibold rounded-md hover:bg-sky-600 transition"
+            >
+              <span>{topic.title}</span>
+              <ChevronDownIcon
+                className={`w-5 h-5 transition-transform ${
+                  expandedTopics.includes(topicIdx) ? 'rotate-180' : ''
+                }`}
+              />
+            </button>
+            {expandedTopics.includes(topicIdx) && (
+              <ul className="mt-2 ml-4 space-y-1">
+                {topic.sounds.map((sound, soundIdx) => {
+                  const isActive =
+                    topicIdx === currentTopicIndex && soundIdx === currentSoundIndex;
+                  return (
+                    <li key={soundIdx}>
+                      <button
+                        onClick={() => handleSelect(topicIdx, soundIdx)}
+                        className={`w-full text-left px-3 py-2 rounded-md transition ${
+                          isActive
+                            ? 'bg-white text-sky-700 font-bold'
+                            : 'text-sky-100 hover:bg-sky-600'
+                        }`}
+                      >
+                        {sound.title}
+                      </button>
+                    </li>
+                  );
+                })}
+              </ul>
+            )}
+          </div>
+        ))}
+      </nav>
+  );
+
+  return (
+    <React.Fragment>
+        <div className="md:hidden p-4 bg-sky-700 text-white flex justify-between items-center">
+            <h1 className="text-xl font-bold">Phonetics Adventure</h1>
+            <button onClick={() => setIsOpen(!isOpen)}><MenuIcon className="w-6 h-6"/></button>
+        </div>
+        
+        {/* Mobile menu */}
+        <div className={`fixed top-0 left-0 h-full w-full bg-black bg-opacity-50 z-40 md:hidden transition-opacity ${isOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'}`} onClick={() => setIsOpen(false)}></div>
+        <div className={`fixed top-0 left-0 h-full w-72 bg-sky-700 text-white z-50 transform transition-transform md:hidden ${isOpen ? 'translate-x-0' : '-translate-x-full'}`}>
+            {content}
+        </div>
+        
+        {/* Desktop sidebar */}
+        <aside className="hidden md:block w-80 bg-sky-700 text-white flex-shrink-0 h-screen overflow-y-auto">
+            {content}
+        </aside>
+    </React.Fragment>
+  );
+};
+
+
+// Component from components/LearningScreen.tsx
+const LearningScreen = ({ user }) => {
+  const [topicIndex, setTopicIndex] = useState(0);
+  const [soundIndex, setSoundIndex] = useState(0);
+  const [wordIndex, setWordIndex] = useState(0);
+  const [sessionCompleted, setSessionCompleted] = useState(false);
+
+  const currentTopic = phoneticData[topicIndex];
+  const currentSound = currentTopic.sounds[soundIndex];
+  const currentWord = currentSound.examples[wordIndex];
+
+  const handleSelectSound = (newTopicIndex, newSoundIndex) => {
+    setTopicIndex(newTopicIndex);
+    setSoundIndex(newSoundIndex);
+    setWordIndex(0);
+    setSessionCompleted(false);
+  };
+  
+  const handleCorrectAnswer = () => {
+    setTimeout(() => {
+        if (wordIndex < currentSound.examples.length - 1) {
+            setWordIndex(wordIndex + 1);
+        } else {
+            setSessionCompleted(true);
+        }
+    }, 1200);
+  };
+
+  const handleNextSound = () => {
+      let nextSoundIndex = soundIndex + 1;
+      let nextTopicIndex = topicIndex;
+
+      if (nextSoundIndex >= phoneticData[topicIndex].sounds.length) {
+          nextSoundIndex = 0;
+          nextTopicIndex = (topicIndex + 1) % phoneticData.length;
+      }
+      handleSelectSound(nextTopicIndex, nextSoundIndex);
+  };
+
+  const ProgressIndicator = useMemo(() => {
+    return (
+      <div className="flex items-center space-x-2">
+        {currentSound.examples.map((_, index) => (
+          <div
+            key={index}
+            className={`h-2 rounded-full transition-all duration-300 ${
+              index < wordIndex ? 'bg-green-500 w-6' : 
+              index === wordIndex ? 'bg-sky-500 w-10' : 'bg-slate-300 w-6'
+            }`}
+          />
+        ))}
+      </div>
+    );
+  }, [wordIndex, currentSound.examples]);
+
+
+  return (
+    <div className="flex flex-col md:flex-row min-h-screen">
+      <TopicSelector
+        topics={phoneticData}
+        currentTopicIndex={topicIndex}
+        currentSoundIndex={soundIndex}
+        onSelectSound={handleSelectSound}
+      />
+      <main className="flex-1 p-4 sm:p-6 md:p-10 flex flex-col items-center justify-center">
+        <div className="w-full max-w-2xl">
+          <header className="mb-6 text-center">
+            <h1 className="text-3xl font-bold text-sky-600">{currentSound.title}</h1>
+            <p className="text-slate-500 mt-2 whitespace-pre-line">{currentSound.description}</p>
+          </header>
+
+          {!sessionCompleted ? (
+            <React.Fragment>
+              <QuizCard
+                key={`${topicIndex}-${soundIndex}-${wordIndex}`}
+                sound={currentSound}
+                word={currentWord}
+                onCorrect={handleCorrectAnswer}
+              />
+              <div className="mt-6 flex justify-center">
+                {ProgressIndicator}
+              </div>
+            </React.Fragment>
+          ) : (
+            <div className="text-center p-8 bg-white rounded-xl shadow-lg flex flex-col items-center">
+                <h2 className="text-3xl font-bold text-green-500">Excellent Work, {user}!</h2>
+                <p className="mt-2 text-slate-600">You've mastered the <span className="font-semibold">{currentSound.sound}</span> sound.</p>
+                <button 
+                    onClick={handleNextSound}
+                    className="mt-6 px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
+                >
+                    Next Sound
+                </button>
+            </div>
+          )}
+        </div>
+      </main>
+    </div>
+  );
+};
+
+
+// Component from App.tsx
+const App = () => {
+  const [user, setUser] = useState(null);
+
+  const handleStart = (name) => {
+    if (name.trim()) {
+      setUser(name.trim());
+    }
+  };
+
+  return (
+    <div className="bg-slate-100 min-h-screen text-slate-800">
+      {user ? (
+        <LearningScreen user={user} />
+      ) : (
+        <WelcomeScreen onStart={handleStart} />
+      )}
+    </div>
+  );
+};
+
+
+// Root rendering logic from index.tsx
+const rootElement = document.getElementById('root');
+if (!rootElement) {
+  throw new Error("Could not find root element to mount to");
+}
+
+const root = ReactDOM.createRoot(rootElement);
+root.render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>
+);
+
+    </script>
+  </body>
+</html>

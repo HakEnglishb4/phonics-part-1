@@ -434,6 +434,418 @@ const phoneticData = [
             ],
         },
     ]
+  },
+  {
+    title: 'Digraphs (2 Chữ cái, 1 Âm mới)',
+    sounds: [
+        {
+            letter: 'sh',
+            sound: '/ʃ/',
+            title: 'Digraph: sh',
+            description: 'Tạo ra âm /ʃ/ - "s" nặng, như khi bạn nói "suỵt, im lặng nào!".',
+            examples: [
+                { word: 'ship', phonetic: '/ʃɪp/', meaning: 'con tàu', emoji: '🚢' },
+                { word: 'shop', phonetic: '/ʃɒp/', meaning: 'cửa hàng', emoji: '🛍️' },
+                { word: 'fish', phonetic: '/fɪʃ/', meaning: 'con cá', emoji: '🐟' },
+                { word: 'cash', phonetic: '/kæʃ/', meaning: 'tiền mặt', emoji: '💵' },
+            ],
+        },
+        {
+            letter: 'ch',
+            sound: '/tʃ/',
+            title: 'Digraph: ch',
+            description: 'Tạo ra âm /tʃ/ - "ch" nhẹ, như trong "cha", "chú".',
+            examples: [
+                { word: 'chip', phonetic: '/tʃɪp/', meaning: 'khoai tây chiên', emoji: '🍟' },
+                { word: 'chin', phonetic: '/tʃɪn/', meaning: 'cái cằm', emoji: '😊' },
+                { word: 'chat', phonetic: '/tʃæt/', meaning: 'nói chuyện', emoji: '💬' },
+                { word: 'rich', phonetic: '/rɪtʃ/', meaning: 'giàu có', emoji: '💰' },
+            ],
+        },
+        {
+            letter: 'th',
+            sound: '/θ/ or /ð/',
+            title: 'Digraph: th',
+            description: 'Đây là âm khó, bạn phải đặt lưỡi giữa hai hàm răng.\n/θ/: thổi hơi không rung (thin, math).\n/ð/: thổi hơi và rung cổ họng (this, that).',
+            examples: [
+                { word: 'thin', phonetic: '/θɪn/', meaning: 'mỏng, gầy', emoji: '🍜' },
+                { word: 'math', phonetic: '/mæθ/', meaning: 'môn toán', emoji: '🧮' },
+                { word: 'this', phonetic: '/ðɪs/', meaning: 'cái này', emoji: '👇' },
+                { word: 'with', phonetic: '/wɪð/', meaning: 'với', emoji: '🤝' },
+            ],
+        },
+        {
+            letter: 'wh',
+            sound: '/w/',
+            title: 'Digraph: wh',
+            description: 'Tạo ra âm /w/ - giống hệt chữ \'w\'. Hãy tưởng tượng bạn đang thổi một ngọn nến.',
+            examples: [
+                { word: 'whip', phonetic: '/wɪp/', meaning: 'cái roi da', emoji: '🤠' },
+                { word: 'when', phonetic: '/wen/', meaning: 'khi nào', emoji: '🤔' },
+                { word: 'which', phonetic: '/wɪtʃ/', meaning: 'cái nào', emoji: '❓' },
+            ],
+        },
+        {
+            letter: 'ph',
+            sound: '/f/',
+            title: 'Digraph: ph',
+            description: 'Tổ hợp này rất thú vị! Nó tạo ra âm /f/, giống hệt chữ \'f\'.',
+            examples: [
+                { word: 'phone', phonetic: '/fəʊn/', meaning: 'điện thoại', emoji: '📱' },
+                { word: 'graph', phonetic: '/ɡræf/', meaning: 'biểu đồ', emoji: '📊' },
+                { word: 'dolphin', phonetic: '/ˈdɒlfɪn/', meaning: 'cá heo', emoji: '🐬' },
+            ],
+        },
+    ]
+  },
+  {
+      title: 'Tổ hợp phụ âm đầu (Blends)',
+      sounds: [
+          {
+              letter: 'bl', sound: '/bl/', title: 'L-Blend: bl', description: 'Phát âm /b/ rồi "trượt" nhanh sang /l/. B-L, bl.',
+              examples: [
+                  { word: 'black', phonetic: '/blæk/', meaning: 'màu đen', emoji: '⬛' },
+                  { word: 'block', phonetic: '/blɒk/', meaning: 'khối', emoji: '🧱' },
+                  { word: 'bled', phonetic: '/bled/', meaning: 'đã chảy máu', emoji: '🩸' },
+              ],
+          },
+          {
+              letter: 'cl', sound: '/kl/', title: 'L-Blend: cl', description: 'Phát âm /k/ rồi "trượt" nhanh sang /l/. C-L, cl.',
+              examples: [
+                  { word: 'clap', phonetic: '/klæp/', meaning: 'vỗ tay', emoji: '👏' },
+                  { word: 'clip', phonetic: '/klɪp/', meaning: 'cái kẹp', emoji: '📎' },
+                  { word: 'clock', phonetic: '/klɒk/', meaning: 'đồng hồ', emoji: '⏰' },
+              ],
+          },
+          {
+              letter: 'fl', sound: '/fl/', title: 'L-Blend: fl', description: 'Phát âm /f/ rồi "trượt" nhanh sang /l/. F-L, fl.',
+              examples: [
+                  { word: 'flag', phonetic: '/flæɡ/', meaning: 'lá cờ', emoji: '🚩' },
+                  { word: 'flat', phonetic: '/flæt/', meaning: 'bằng phẳng', emoji: '🏞️' },
+                  { word: 'flip', phonetic: '/flɪp/', meaning: 'lật', emoji: '🤸' },
+              ],
+          },
+          {
+              letter: 'gl', sound: '/gl/', title: 'L-Blend: gl', description: 'Phát âm /g/ rồi "trượt" nhanh sang /l/. G-L, gl.',
+              examples: [
+                  { word: 'glad', phonetic: '/ɡlæd/', meaning: 'vui mừng', emoji: '😄' },
+                  { word: 'glass', phonetic: '/ɡlɑːs/', meaning: 'cái ly', emoji: ' गिलास' },
+                  { word: 'glum', phonetic: '/ɡlʌm/', meaning: 'ủ rũ', emoji: '😞' },
+              ],
+          },
+          {
+              letter: 'pl', sound: '/pl/', title: 'L-Blend: pl', description: 'Phát âm /p/ rồi "trượt" nhanh sang /l/. P-L, pl.',
+              examples: [
+                  { word: 'plan', phonetic: '/plæn/', meaning: 'kế hoạch', emoji: '🗓️' },
+                  { word: 'plug', phonetic: '/plʌɡ/', meaning: 'phích cắm', emoji: '🔌' },
+                  { word: 'plot', phonetic: '/plɒt/', meaning: 'cốt truyện', emoji: '📜' },
+              ],
+          },
+          {
+              letter: 'sl', sound: '/sl/', title: 'L-Blend: sl', description: 'Phát âm /s/ rồi "trượt" nhanh sang /l/. S-L, sl.',
+              examples: [
+                  { word: 'slip', phonetic: '/slɪp/', meaning: 'trượt ngã', emoji: '🍌' },
+                  { word: 'sled', phonetic: '/sled/', meaning: 'xe trượt tuyết', emoji: '🛷' },
+                  { word: 'slug', phonetic: '/slʌɡ/', meaning: 'con sên', emoji: '🐌' },
+              ],
+          },
+          {
+              letter: 'br', sound: '/br/', title: 'R-Blend: br', description: 'Phát âm /b/ rồi "trượt" nhanh sang /r/. B-R, br.',
+              examples: [
+                  { word: 'brag', phonetic: '/bræɡ/', meaning: 'khoe khoang', emoji: '😏' },
+                  { word: 'bred', phonetic: '/bred/', meaning: 'đã sinh sản', emoji: '🐣' },
+                  { word: 'brim', phonetic: '/brɪm/', meaning: 'vành mũ', emoji: '👒' },
+              ],
+          },
+          {
+              letter: 'cr', sound: '/kr/', title: 'R-Blend: cr', description: 'Phát âm /k/ rồi "trượt" nhanh sang /r/. C-R, cr.',
+              examples: [
+                  { word: 'crab', phonetic: '/kræb/', meaning: 'con cua', emoji: '🦀' },
+                  { word: 'crib', phonetic: '/krɪb/', meaning: 'cái cũi', emoji: '👶' },
+                  { word: 'crop', phonetic: '/krɒp/', meaning: 'vụ mùa', emoji: '🌾' },
+              ],
+          },
+          {
+              letter: 'dr', sound: '/dr/', title: 'R-Blend: dr', description: 'Phát âm /d/ rồi "trượt" nhanh sang /r/. D-R, dr.',
+              examples: [
+                  { word: 'drag', phonetic: '/dræɡ/', meaning: 'kéo lê', emoji: '💪' },
+                  { word: 'drop', phonetic: '/drɒp/', meaning: 'rơi, giọt', emoji: '💧' },
+                  { word: 'drum', phonetic: '/drʌm/', meaning: 'cái trống', emoji: '🥁' },
+              ],
+          },
+          {
+              letter: 'fr', sound: '/fr/', title: 'R-Blend: fr', description: 'Phát âm /f/ rồi "trượt" nhanh sang /r/. F-R, fr.',
+              examples: [
+                  { word: 'frog', phonetic: '/frɒɡ/', meaning: 'con ếch', emoji: '🐸' },
+                  { word: 'from', phonetic: '/frɒm/', meaning: 'từ', emoji: '➡️' },
+                  { word: 'fret', phonetic: '/fret/', meaning: 'băn khoăn', emoji: '😟' },
+              ],
+          },
+          {
+              letter: 'gr', sound: '/gr/', title: 'R-Blend: gr', description: 'Phát âm /g/ rồi "trượt" nhanh sang /r/. G-R, gr.',
+              examples: [
+                  { word: 'grin', phonetic: '/ɡrɪn/', meaning: 'cười toe toét', emoji: '😁' },
+                  { word: 'grab', phonetic: '/ɡræb/', meaning: 'chộp lấy', emoji: '✋' },
+                  { word: 'grub', phonetic: '/ɡrʌb/', meaning: 'sâu bọ', emoji: '🐛' },
+              ],
+          },
+          {
+              letter: 'pr', sound: '/pr/', title: 'R-Blend: pr', description: 'Phát âm /p/ rồi "trượt" nhanh sang /r/. P-R, pr.',
+              examples: [
+                  { word: 'prop', phonetic: '/prɒp/', meaning: 'đạo cụ', emoji: '🎭' },
+                  { word: 'prim', phonetic: '/prɪm/', meaning: 'kỹ tính', emoji: '🧐' },
+                  { word: 'press', phonetic: '/pres/', meaning: 'ấn, ép', emoji: '👇' },
+              ],
+          },
+          {
+              letter: 'tr', sound: '/tr/', title: 'R-Blend: tr', description: 'Phát âm /t/ rồi "trượt" nhanh sang /r/. T-R, tr.',
+              examples: [
+                  { word: 'trip', phonetic: '/trɪp/', meaning: 'chuyến đi', emoji: '✈️' },
+                  { word: 'trap', phonetic: '/træp/', meaning: 'cái bẫy', emoji: '🪤' },
+                  { word: 'trim', phonetic: '/trɪm/', meaning: 'cắt tỉa', emoji: '✂️' },
+              ],
+          },
+          {
+              letter: 'sc', sound: '/sk/', title: 'S-Blend: sc', description: 'Phát âm /s/ rồi "trượt" nhanh sang /k/. S-C, sc.',
+              examples: [
+                  { word: 'scab', phonetic: '/skæb/', meaning: 'vảy (vết thương)', emoji: '🩹' },
+                  { word: 'scan', phonetic: '/skæn/', meaning: 'quét', emoji: '📠' },
+              ],
+          },
+          {
+              letter: 'sk', sound: '/sk/', title: 'S-Blend: sk', description: 'Phát âm /s/ rồi "trượt" nhanh sang /k/. S-K, sk.',
+              examples: [
+                  { word: 'skip', phonetic: '/skɪp/', meaning: 'nhảy dây, bỏ qua', emoji: '🤸‍♀️' },
+                  { word: 'skin', phonetic: '/skɪn/', meaning: 'da', emoji: '🖐️' },
+                  { word: 'skit', phonetic: '/skɪt/', meaning: 'vở kịch ngắn', emoji: '🎬' },
+              ],
+          },
+          {
+              letter: 'sm', sound: '/sm/', title: 'S-Blend: sm', description: 'Phát âm /s/ rồi "trượt" nhanh sang /m/. S-M, sm.',
+              examples: [
+                  { word: 'smell', phonetic: '/smel/', meaning: 'ngửi', emoji: '👃' },
+                  { word: 'smog', phonetic: '/smɒɡ/', meaning: 'khói bụi', emoji: '🌫️' },
+              ],
+          },
+          {
+              letter: 'sn', sound: '/sn/', title: 'S-Blend: sn', description: 'Phát âm /s/ rồi "trượt" nhanh sang /n/. S-N, sn.',
+              examples: [
+                  { word: 'snap', phonetic: '/snæp/', meaning: 'búng tay', emoji: '🫰' },
+                  { word: 'snip', phonetic: '/snɪp/', meaning: 'cắt', emoji: '✂️' },
+                  { word: 'snug', phonetic: '/snʌɡ/', meaning: 'ấm cúng', emoji: '🤗' },
+              ],
+          },
+          {
+              letter: 'sp', sound: '/sp/', title: 'S-Blend: sp', description: 'Phát âm /s/ rồi "trượt" nhanh sang /p/. S-P, sp.',
+              examples: [
+                  { word: 'spin', phonetic: '/spɪn/', meaning: 'xoay', emoji: '💫' },
+                  { word: 'spot', phonetic: '/spɒt/', meaning: 'dấu chấm', emoji: '⚫' },
+                  { word: 'spell', phonetic: '/spel/', meaning: 'đánh vần', emoji: '🔤' },
+              ],
+          },
+          {
+              letter: 'st', sound: '/st/', title: 'S-Blend: st', description: 'Phát âm /s/ rồi "trượt" nhanh sang /t/. S-T, st.',
+              examples: [
+                  { word: 'stop', phonetic: '/stɒp/', meaning: 'dừng lại', emoji: '🛑' },
+                  { word: 'stem', phonetic: '/stem/', meaning: 'thân cây', emoji: '🌿' },
+                  { word: 'stun', phonetic: '/stʌn/', meaning: 'làm choáng', emoji: '😵' },
+              ],
+          },
+          {
+              letter: 'sw', sound: '/sw/', title: 'S-Blend: sw', description: 'Phát âm /s/ rồi "trượt" nhanh sang /w/. S-W, sw.',
+              examples: [
+                  { word: 'swim', phonetic: '/swɪm/', meaning: 'bơi', emoji: '🏊' },
+                  { word: 'swat', phonetic: '/swɒt/', meaning: 'đập (ruồi)', emoji: '🦟' },
+                  { word: 'swig', phonetic: '/swɪɡ/', meaning: 'uống ừng ực', emoji: '🥤' },
+              ],
+          },
+      ],
+  },
+  {
+      title: 'Tổ hợp 3 chữ cái & Đặc biệt',
+      sounds: [
+          {
+              letter: 'spl', sound: '/spl/', title: 'Tổ hợp 3 chữ cái: spl', description: 'Đây là tổ hợp 3 chữ cái! S-P-L, spl.',
+              examples: [
+                  { word: 'splash', phonetic: '/splæʃ/', meaning: 'té nước', emoji: '💦' },
+                  { word: 'split', phonetic: '/splɪt/', meaning: 'chia ra', emoji: '쪼개다' },
+                  { word: 'splint', phonetic: '/splɪnt/', meaning: 'cái nẹp', emoji: '깁스' },
+              ],
+          },
+          {
+              letter: 'spr', sound: '/spr/', title: 'Tổ hợp 3 chữ cái: spr', description: 'Đây là tổ hợp 3 chữ cái! S-P-R, spr.',
+              examples: [
+                  { word: 'spray', phonetic: '/spreɪ/', meaning: 'xịt', emoji: '💨' },
+                  { word: 'spring', phonetic: '/sprɪŋ/', meaning: 'mùa xuân', emoji: '🌸' },
+                  { word: 'sprint', phonetic: '/sprɪnt/', meaning: 'chạy nước rút', emoji: '🏃💨' },
+              ],
+          },
+          {
+              letter: 'str', sound: '/str/', title: 'Tổ hợp 3 chữ cái: str', description: 'Đây là tổ hợp 3 chữ cái! S-T-R, str.',
+              examples: [
+                  { word: 'strong', phonetic: '/strɒŋ/', meaning: 'khỏe mạnh', emoji: '💪' },
+                  { word: 'street', phonetic: '/striːt/', meaning: 'đường phố', emoji: '🛣️' },
+                  { word: 'string', phonetic: '/strɪŋ/', meaning: 'sợi dây', emoji: '🧵' },
+              ],
+          },
+          {
+              letter: 'scr', sound: '/skr/', title: 'Tổ hợp 3 chữ cái: scr', description: 'Đây là tổ hợp 3 chữ cái! S-C-R, scr.',
+              examples: [
+                  { word: 'scrub', phonetic: '/skrʌb/', meaning: 'cọ rửa', emoji: '🧽' },
+                  { word: 'scrap', phonetic: '/skræp/', meaning: 'mảnh vụn', emoji: '🗑️' },
+                  { word: 'screen', phonetic: '/skriːn/', meaning: 'màn hình', emoji: '🖥️' },
+              ],
+          },
+          {
+              letter: 'shr', sound: '/ʃr/', title: 'Tổ hợp Đặc biệt: shr', description: 'Một digraph (sh) kết hợp với một phụ âm (r)! SH-R, shr.',
+              examples: [
+                  { word: 'shrimp', phonetic: '/ʃrɪmp/', meaning: 'con tôm', emoji: '🦐' },
+                  { word: 'shrink', phonetic: '/ʃrɪŋk/', meaning: 'co lại', emoji: '🤏' },
+                  { word: 'shrug', phonetic: '/ʃrʌɡ/', meaning: 'nhún vai', emoji: '🤷' },
+              ],
+          },
+          {
+              letter: 'thr', sound: '/θr/', title: 'Tổ hợp Đặc biệt: thr', description: 'Một digraph (th) kết hợp với một phụ âm (r)! TH-R, thr.',
+              examples: [
+                  { word: 'three', phonetic: '/θriː/', meaning: 'số ba', emoji: '3️⃣' },
+                  { word: 'throw', phonetic: '/θrəʊ/', meaning: 'ném', emoji: '🥎' },
+                  { word: 'throat', phonetic: '/θrəʊt/', meaning: 'cổ họng', emoji: '😷' },
+              ],
+          },
+          {
+              letter: 'squ', sound: '/skw/', title: 'Tổ hợp Đặc biệt: squ', description: 'Một tổ hợp 3 trong 1 đặc biệt! S-QU, squ.',
+              examples: [
+                  { word: 'squid', phonetic: '/skwɪd/', meaning: 'con mực', emoji: '🦑' },
+                  { word: 'squash', phonetic: '/skwɒʃ/', meaning: 'bí, ép nát', emoji: '🎃' },
+                  { word: 'square', phonetic: '/skweər/', meaning: 'hình vuông', emoji: '🟧' },
+              ],
+          },
+      ]
+  },
+  {
+      title: 'Tổ hợp phụ âm cuối (Ending Blends)',
+      sounds: [
+          {
+              letter: 'nd', sound: '/nd/', title: 'Ending Blend: -nd', description: 'Kết thúc bằng âm /n/ và /d/.',
+              examples: [
+                  { word: 'hand', phonetic: '/hænd/', meaning: 'cái tay', emoji: '✋' },
+                  { word: 'sand', phonetic: '/sænd/', meaning: 'cát', emoji: '🏖️' },
+                  { word: 'find', phonetic: '/faɪnd/', meaning: 'tìm thấy', emoji: '🔍' },
+              ],
+          },
+          {
+              letter: 'nt', sound: '/nt/', title: 'Ending Blend: -nt', description: 'Kết thúc bằng âm /n/ và /t/.',
+              examples: [
+                  { word: 'tent', phonetic: '/tent/', meaning: 'cái lều', emoji: '🏕️' },
+                  { word: 'ant', phonetic: '/ænt/', meaning: 'con kiến', emoji: '🐜' },
+                  { word: 'hunt', phonetic: '/hʌnt/', meaning: 'săn', emoji: '🏹' },
+              ],
+          },
+          {
+              letter: 'nk', sound: '/ŋk/', title: 'Ending Blend: -nk', description: 'Chữ \'n\' được đọc là /ŋ/ (giống "ng") trước chữ \'k\'.',
+              examples: [
+                  { word: 'pink', phonetic: '/pɪŋk/', meaning: 'màu hồng', emoji: '🌸' },
+                  { word: 'bank', phonetic: '/bæŋk/', meaning: 'ngân hàng', emoji: '🏦' },
+                  { word: 'think', phonetic: '/θɪŋk/', meaning: 'suy nghĩ', emoji: '🤔' },
+              ],
+          },
+          {
+              letter: 'st', sound: '/st/', title: 'Ending Blend: -st', description: 'Kết thúc bằng âm /s/ và /t/.',
+              examples: [
+                  { word: 'nest', phonetic: '/nest/', meaning: 'cái tổ', emoji: '둥지' },
+                  { word: 'fast', phonetic: '/fɑːst/', meaning: 'nhanh', emoji: '⏩' },
+                  { word: 'list', phonetic: '/lɪst/', meaning: 'danh sách', emoji: '📝' },
+              ],
+          },
+          {
+              letter: 'sk', sound: '/sk/', title: 'Ending Blend: -sk', description: 'Kết thúc bằng âm /s/ và /k/.',
+              examples: [
+                  { word: 'mask', phonetic: '/mæsk/', meaning: 'mặt nạ', emoji: '😷' },
+                  { word: 'desk', phonetic: '/desk/', meaning: 'cái bàn', emoji: '🖥️' },
+                  { word: 'ask', phonetic: '/ɑːsk/', meaning: 'hỏi', emoji: '❓' },
+              ],
+          },
+          {
+              letter: 'mp', sound: '/mp/', title: 'Ending Blend: -mp', description: 'Kết thúc bằng âm /m/ và /p/.',
+              examples: [
+                  { word: 'lamp', phonetic: '/læmp/', meaning: 'cái đèn', emoji: '💡' },
+                  { word: 'jump', phonetic: '/dʒʌmp/', meaning: 'nhảy', emoji: '🤸' },
+                  { word: 'camp', phonetic: '/kæmp/', meaning: 'cắm trại', emoji: '🏕️' },
+              ],
+          },
+          {
+              letter: 'ft', sound: '/ft/', title: 'Ending Blend: -ft', description: 'Kết thúc bằng âm /f/ và /t/.',
+              examples: [
+                  { word: 'gift', phonetic: '/ɡɪft/', meaning: 'món quà', emoji: '🎁' },
+                  { word: 'left', phonetic: '/left/', meaning: 'bên trái', emoji: '⬅️' },
+                  { word: 'soft', phonetic: '/sɒft/', meaning: 'mềm', emoji: '🧸' },
+              ],
+          },
+      ]
+  },
+  {
+      title: 'Quy tắc Magic E (E câm)',
+      sounds: [
+          {
+              letter: 'a',
+              sound: '/eɪ/',
+              title: 'Magic E: a_e',
+              description: 'Chữ \'e\' câm ở cuối làm cho chữ \'a\' đọc thành tên của nó, /eɪ/ (giống "ây").\nVí dụ: cap /kæp/ -> cape /keɪp/',
+              examples: [
+                  { word: 'cake', phonetic: '/keɪk/', meaning: 'bánh ngọt', emoji: '🍰' },
+                  { word: 'name', phonetic: '/neɪm/', meaning: 'tên', emoji: '📛' },
+                  { word: 'gate', phonetic: '/ɡeɪt/', meaning: 'cái cổng', emoji: '⛩️' },
+                  { word: 'wave', phonetic: '/weɪv/', meaning: 'làn sóng', emoji: '🌊' },
+              ],
+          },
+          {
+              letter: 'i',
+              sound: '/aɪ/',
+              title: 'Magic E: i_e',
+              description: 'Chữ \'e\' câm ở cuối làm cho chữ \'i\' đọc thành tên của nó, /aɪ/ (giống "ai").\nVí dụ: pin /pɪn/ -> pine /paɪn/',
+              examples: [
+                  { word: 'bike', phonetic: '/baɪk/', meaning: 'xe đạp', emoji: '🚲' },
+                  { word: 'time', phonetic: '/taɪm/', meaning: 'thời gian', emoji: '⏰' },
+                  { word: 'five', phonetic: '/faɪv/', meaning: 'số năm', emoji: '5️⃣' },
+                  { word: 'ride', phonetic: '/raɪd/', meaning: 'cưỡi, đi xe', emoji: '🏇' },
+              ],
+          },
+          {
+              letter: 'o',
+              sound: '/əʊ/',
+              title: 'Magic E: o_e',
+              description: 'Chữ \'e\' câm ở cuối làm cho chữ \'o\' đọc thành tên của nó, /əʊ/ (giống "âu").\nVí dụ: hop /hɒp/ -> hope /həʊp/',
+              examples: [
+                  { word: 'home', phonetic: '/həʊm/', meaning: 'nhà', emoji: '🏠' },
+                  { word: 'hope', phonetic: '/həʊp/', meaning: 'hy vọng', emoji: '🙏' },
+                  { word: 'rope', phonetic: '/rəʊp/', meaning: 'dây thừng', emoji: '밧줄' },
+                  { word: 'nose', phonetic: '/nəʊz/', meaning: 'cái mũi', emoji: '👃' },
+              ],
+          },
+          {
+              letter: 'u',
+              sound: '/u:/ or /ju:/',
+              title: 'Magic E: u_e',
+              description: 'Chữ \'e\' câm ở cuối làm cho chữ \'u\' đọc thành tên của nó, /u:/ hoặc /ju:/ (giống "u" hoặc "iu").\nVí dụ: cub /kʌb/ -> cube /kjuːb/',
+              examples: [
+                  { word: 'rule', phonetic: '/ruːl/', meaning: 'quy tắc', emoji: '📜' },
+                  { word: 'June', phonetic: '/dʒuːn/', meaning: 'tháng sáu', emoji: '📅' },
+                  { word: 'cute', phonetic: '/kjuːt/', meaning: 'dễ thương', emoji: '🥰' },
+                  { word: 'huge', phonetic: '/hjuːdʒ/', meaning: 'khổng lồ', emoji: '🐘' },
+              ],
+          },
+          {
+              letter: 'e',
+              sound: '/i:/',
+              title: 'Magic E: e_e',
+              description: 'Trường hợp này hiếm gặp, nhưng chữ \'e\' câm có thể làm cho chữ \'e\' đầu tiên đọc thành âm dài /i:/ (giống "i" dài).',
+              examples: [
+                  { word: 'these', phonetic: '/ðiːz/', meaning: 'những cái này', emoji: '👇' },
+                  { word: 'Pete', phonetic: '/piːt/', meaning: 'tên người', emoji: '👨' },
+                  { word: 'complete', phonetic: '/kəmˈpliːt/', meaning: 'hoàn thành', emoji: '✅' },
+              ],
+          },
+      ]
   }
 ];
 

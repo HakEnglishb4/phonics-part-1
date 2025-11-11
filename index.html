@@ -1136,200 +1136,6 @@ const QuizCard = ({ sound, word, onCorrect, speak }) => {
   );
 };
 
-// Component from components/TopicQuiz.tsx
-const TopicQuiz = ({ topic, user, onComplete, speak }) => {
-  const [questions, setQuestions] = useState([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [selectedOption, setSelectedOption] = useState(null);
-  const [status, setStatus] = useState('idle');
-  const [score, setScore] = useState(0);
-  const [quizFinished, setQuizFinished] = useState(false);
-
-  useEffect(() => {
-    const selectedQuestions = topic.sounds
-      .filter(sound => sound.sound && !sound.sound.startsWith('(') && sound.examples.length > 0)
-      .map(sound => {
-        const randomExample = sound.examples[Math.floor(Math.random() * sound.examples.length)];
-        return {
-          ...randomExample,
-          correctSound: sound.sound,
-        };
-      })
-      .sort(() => 0.5 - Math.random());
-
-    const allSoundsInTopic = [...new Set(topic.sounds.map(s => s.sound).filter(s => s && !s.startsWith('(')))];
-
-    const generatedQuestions = selectedQuestions.map(q => {
-      const distractors = allSoundsInTopic
-        .filter(s => s !== q.correctSound)
-        .sort(() => 0.5 - Math.random())
-        .slice(0, 3);
-      
-      const options = [q.correctSound, ...distractors].sort(() => 0.5 - Math.random());
-      
-      return { ...q, options };
-    });
-
-    setQuestions(generatedQuestions);
-    setCurrentIndex(0);
-    setSelectedOption(null);
-    setStatus('idle');
-    setScore(0);
-    setQuizFinished(false);
-
-  }, [topic]);
-
-  const handleSelect = (option) => {
-    if (status !== 'idle') return;
-    setSelectedOption(option);
-    if (option === questions[currentIndex].correctSound) {
-      setStatus('correct');
-      setScore(prev => prev + 1);
-      speak("Correct!");
-    } else {
-      setStatus('incorrect');
-      speak("Incorrect.");
-    }
-  };
-
-  const handleNextQuestion = () => {
-    if (currentIndex < questions.length - 1) {
-      setCurrentIndex(prev => prev + 1);
-      setStatus('idle');
-      setSelectedOption(null);
-    } else {
-      setQuizFinished(true);
-    }
-  };
-  
-  const playWordSound = useCallback(() => {
-      if (questions.length > 0) {
-        speak(questions[currentIndex].word);
-      }
-  }, [speak, questions, currentIndex]);
-
-  if (questions.length === 0) {
-    return (
-      <div className="text-center p-8 bg-white rounded-xl shadow-lg flex flex-col items-center">
-          <h2 className="text-2xl font-bold text-slate-700">This topic is for practice only.</h2>
-          <p className="mt-2 text-slate-600">Let's move on to the next one!</p>
-          <button 
-              onClick={onComplete}
-              className="mt-6 px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
-          >
-              Continue
-          </button>
-      </div>
-    );
-  }
-  
-  if (quizFinished) {
-    return (
-      <div className="text-center p-8 bg-white rounded-xl shadow-lg flex flex-col items-center">
-        <h2 className="text-3xl font-bold text-green-500">Topic Quiz Complete!</h2>
-        <p className="mt-2 text-2xl text-slate-600">Great job, {user}!</p>
-        <p className="mt-4 text-4xl font-bold text-sky-600">
-          Your Score: {score} / {questions.length}
-        </p>
-        <div className="text-6xl mt-4">
-            {score / questions.length > 0.7 ? '🎉' : '👍'}
-        </div>
-        <button 
-            onClick={onComplete}
-            className="mt-8 px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
-        >
-            Continue to Next Topic
-        </button>
-      </div>
-    );
-  }
-
-  const currentQuestion = questions[currentIndex];
-  const phoneticWithBlank = currentQuestion.phonetic.replace(currentQuestion.correctSound, '___');
-
-  const getButtonClass = (option) => {
-    const baseClass = "w-full text-2xl font-bold py-4 px-6 rounded-xl shadow-md transition-all duration-300 transform flex items-center justify-center";
-    if (status === 'idle') {
-        return `${baseClass} bg-white hover:bg-sky-100 hover:-translate-y-1 text-slate-700`;
-    }
-    if (option === currentQuestion.correctSound) {
-        return `${baseClass} bg-green-500 text-white scale-105`;
-    }
-    if (option === selectedOption) {
-        return `${baseClass} bg-red-500 text-white`;
-    }
-    return `${baseClass} bg-slate-200 text-slate-500`;
-  };
-
-  return (
-    <div className="bg-white p-6 sm:p-8 rounded-2xl shadow-xl w-full">
-      <div className="flex justify-between items-center mb-4">
-        <h2 className="text-xl font-bold text-sky-700">Topic Quiz: {topic.title}</h2>
-        <p className="text-lg font-semibold text-slate-500">Question {currentIndex + 1} / {questions.length}</p>
-      </div>
-      <div className="w-full h-2 bg-slate-200 rounded-full mb-6">
-        <div className="h-2 bg-sky-500 rounded-full transition-all duration-300" style={{ width: `${((currentIndex + 1) / questions.length) * 100}%` }}></div>
-      </div>
-      
-      <div className="flex justify-between items-center mb-6">
-        <div className="text-xl">
-          <span className="font-semibold text-slate-600">
-            {currentQuestion.emoji && <span className="mr-2 text-2xl">{currentQuestion.emoji}</span>}
-            Which sound completes the transcription?
-          </span>
-        </div>
-        <button
-          onClick={playWordSound}
-          className="p-3 bg-sky-100 rounded-full text-sky-500 hover:bg-sky-200 transition"
-          aria-label={`Listen to the word ${currentQuestion.word}`}
-        >
-          <SpeakerIcon className="w-6 h-6" />
-        </button>
-      </div>
-
-      <div className="bg-slate-100 rounded-lg p-8 mb-8 text-center">
-        <p className="text-5xl font-bold tracking-widest text-slate-700">
-            {currentQuestion.word}
-        </p>
-         <p className="text-3xl font-mono text-slate-500 mt-2">
-            {phoneticWithBlank.split('___').map((part, i) => 
-                <React.Fragment key={i}>
-                    {part}
-                    {i < phoneticWithBlank.split('___').length - 1 && <span className="inline-block text-center text-sky-500 bg-sky-200 rounded-lg px-4 py-1 w-20 sm:w-24">?</span>}
-                </React.Fragment>
-            )}
-        </p>
-      </div>
-
-      <div className="grid grid-cols-2 gap-4">
-        {currentQuestion.options.map((option) => (
-          <button
-            key={option}
-            onClick={() => handleSelect(option)}
-            disabled={status !== 'idle'}
-            className={getButtonClass(option)}
-          >
-            {option}
-            {selectedOption === option && status === 'correct' && <CheckCircleIcon className="w-7 h-7 ml-2"/>}
-            {selectedOption === option && status === 'incorrect' && <XCircleIcon className="w-7 h-7 ml-2"/>}
-          </button>
-        ))}
-      </div>
-      
-      {status !== 'idle' && (
-        <div className="mt-6 text-center">
-            <button 
-                onClick={handleNextQuestion}
-                className="px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
-            >
-                {currentIndex < questions.length - 1 ? 'Next Question' : 'Finish Quiz'}
-            </button>
-        </div>
-      )}
-    </div>
-  );
-};
-
 
 // Component from components/TopicSelector.tsx
 const TopicSelector = ({
@@ -1452,7 +1258,6 @@ const LearningScreen = ({ user, speechControls }) => {
   const [soundIndex, setSoundIndex] = useState(0);
   const [wordIndex, setWordIndex] = useState(0);
   const [sessionCompleted, setSessionCompleted] = useState(false);
-  const [inTopicQuiz, setInTopicQuiz] = useState(false);
 
   const currentTopic = phoneticData[topicIndex];
   const currentSound = currentTopic.sounds[soundIndex];
@@ -1463,7 +1268,6 @@ const LearningScreen = ({ user, speechControls }) => {
     setSoundIndex(newSoundIndex);
     setWordIndex(0);
     setSessionCompleted(false);
-    setInTopicQuiz(false);
   };
   
   const handleCorrectAnswer = () => {
@@ -1480,15 +1284,11 @@ const LearningScreen = ({ user, speechControls }) => {
       const isLastSoundInTopic = soundIndex >= phoneticData[topicIndex].sounds.length - 1;
 
       if (isLastSoundInTopic) {
-          setInTopicQuiz(true);
+          const nextTopicIndex = (topicIndex + 1) % phoneticData.length;
+          handleSelectSound(nextTopicIndex, 0);
       } else {
           handleSelectSound(topicIndex, soundIndex + 1);
       }
-  };
-
-  const handleQuizComplete = () => {
-      const nextTopicIndex = (topicIndex + 1) % phoneticData.length;
-      handleSelectSound(nextTopicIndex, 0);
   };
 
   const ProgressIndicator = useMemo(() => {
@@ -1507,6 +1307,7 @@ const LearningScreen = ({ user, speechControls }) => {
     );
   }, [wordIndex, currentSound.examples]);
 
+  const isLastSoundInTopic = soundIndex >= phoneticData[topicIndex].sounds.length - 1;
 
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
@@ -1521,46 +1322,37 @@ const LearningScreen = ({ user, speechControls }) => {
       />
       <main className="flex-1 p-4 sm:p-6 md:p-10 flex flex-col items-center justify-center">
         <div className="w-full max-w-2xl">
-            {inTopicQuiz ? (
-                <TopicQuiz
-                    topic={currentTopic}
-                    user={user}
-                    onComplete={handleQuizComplete}
-                    speak={speechControls.speak}
-                />
-            ) : (
-                <React.Fragment>
-                    <header className="mb-6 text-center">
-                        <h1 className="text-3xl font-bold text-sky-600">{currentSound.title}</h1>
-                        <p className="text-slate-500 mt-2 whitespace-pre-line">{currentSound.description}</p>
-                    </header>
-                    {!sessionCompleted ? (
-                        <React.Fragment>
-                        <QuizCard
-                            key={`${topicIndex}-${soundIndex}-${wordIndex}`}
-                            sound={currentSound}
-                            word={currentWord}
-                            onCorrect={handleCorrectAnswer}
-                            speak={speechControls.speak}
-                        />
-                        <div className="mt-6 flex justify-center">
-                            {ProgressIndicator}
-                        </div>
-                        </React.Fragment>
-                    ) : (
-                        <div className="text-center p-8 bg-white rounded-xl shadow-lg flex flex-col items-center">
-                            <h2 className="text-3xl font-bold text-green-500">Excellent Work, {user}!</h2>
-                            <p className="mt-2 text-slate-600">You've mastered the <span className="font-semibold">{currentSound.sound}</span> sound.</p>
-                            <button 
-                                onClick={handleNextSound}
-                                className="mt-6 px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
-                            >
-                                Next
-                            </button>
-                        </div>
-                    )}
-                </React.Fragment>
-            )}
+            <React.Fragment>
+                <header className="mb-6 text-center">
+                    <h1 className="text-3xl font-bold text-sky-600">{currentSound.title}</h1>
+                    <p className="text-slate-500 mt-2 whitespace-pre-line">{currentSound.description}</p>
+                </header>
+                {!sessionCompleted ? (
+                    <React.Fragment>
+                    <QuizCard
+                        key={`${topicIndex}-${soundIndex}-${wordIndex}`}
+                        sound={currentSound}
+                        word={currentWord}
+                        onCorrect={handleCorrectAnswer}
+                        speak={speechControls.speak}
+                    />
+                    <div className="mt-6 flex justify-center">
+                        {ProgressIndicator}
+                    </div>
+                    </React.Fragment>
+                ) : (
+                    <div className="text-center p-8 bg-white rounded-xl shadow-lg flex flex-col items-center">
+                        <h2 className="text-3xl font-bold text-green-500">Excellent Work, {user}!</h2>
+                        <p className="mt-2 text-slate-600">You've mastered the <span className="font-semibold">{currentSound.sound}</span> sound.</p>
+                        <button 
+                            onClick={handleNextSound}
+                            className="mt-6 px-8 py-3 text-lg font-semibold text-white bg-sky-500 rounded-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 transform hover:-translate-y-1 transition-all duration-300 shadow-lg"
+                        >
+                            {isLastSoundInTopic ? 'Next Topic' : 'Next Sound'}
+                        </button>
+                    </div>
+                )}
+            </React.Fragment>
         </div>
       </main>
     </div>
